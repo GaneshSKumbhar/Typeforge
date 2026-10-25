@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="crystal" x1="11" y1="8" x2="54" y2="57" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff7d6"/><stop offset=".38" stop-color="#f7b94d"/><stop offset="1" stop-color="#ed7c19"/>
+    </linearGradient>
+    <linearGradient id="facet" x1="20" y1="17" x2="42" y2="51" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity=".08"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#10131b"/>
+  <path d="M32 7 53 20l-3 25-18 13L14 45l-3-25L32 7Z" fill="url(#crystal)"/>
+  <path d="m32 7 1 27 20-14L32 7Z" fill="url(#facet)"/>
+  <path d="m32 34 18 11-18 13V34Z" fill="#d87516" fill-opacity=".45"/>
+  <path d="M22 27v15m0-15h9c5 0 5 7 0 7h-9m0 0h10c5 0 5 8 0 8h-9" fill="none" stroke="#24202a" stroke-linecap="round" stroke-linejoin="round" stroke-width="4"/>
+  <path d="m47 10 1 5m-2-2 4-1" stroke="#fff5d6" stroke-linecap="round" stroke-width="1.5"/>
+</svg>
