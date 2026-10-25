@@ -178,10 +178,10 @@ body::after {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10,10,15,0.7);
+  background: color-mix(in srgb, var(--bg-deep) 88%, transparent);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 16%, var(--line));
   padding: 0 var(--gap-lg);
 }
 
@@ -191,8 +191,8 @@ body::after {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 64px;
-  gap: var(--gap-lg);
+  height: 72px;
+  gap: clamp(12px, 3vw, 36px);
 }
 
 .logo {
@@ -240,15 +240,21 @@ body::after {
 /* ── Nav Links ── */
 nav {
   display: flex;
-  gap: 2px;
+  gap: 6px;
   align-items: center;
+  padding: 5px;
+  border: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+  border-radius: 14px;
+  background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 9%, transparent), color-mix(in srgb, var(--fg) 3%, transparent) 48%, color-mix(in srgb, var(--accent) 5%, transparent));
+  backdrop-filter: blur(14px) saturate(1.35);
+  -webkit-backdrop-filter: blur(14px) saturate(1.35);
 }
 
 nav a {
   color: var(--fg-muted);
   text-decoration: none;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
+  padding: 9px 15px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -262,17 +268,18 @@ nav a:hover {
 
 nav a.on {
   color: var(--accent-text);
-  background: var(--accent-subtle);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 17%, var(--bg-card)), var(--accent-subtle));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 24%, transparent), 0 3px 12px var(--accent-subtle);
 }
 
 nav a.on::after {
   content: "";
   position: absolute;
-  bottom: 0;
+  bottom: 3px;
   left: 50%;
   transform: translateX(-50%);
-  width: 16px;
-  height: 2px;
+  width: 5px;
+  height: 5px;
   background: var(--accent);
   border-radius: var(--radius-full);
   box-shadow: 0 0 8px var(--accent-glow);
@@ -284,6 +291,40 @@ nav a.on::after {
   align-items: center;
   gap: var(--gap-md);
 }
+
+/* Focused typing dashboard */
+#test-area {
+  max-width: 940px;
+  margin: clamp(12px, 4vh, 40px) auto 0;
+  padding: clamp(18px, 3vw, 34px);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  border-radius: 24px;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--bg-raised) 94%, var(--accent-subtle)), color-mix(in srgb, var(--bg-deep) 92%, transparent));
+  box-shadow: 0 24px 80px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.035);
+}
+
+#test-area .toolbar {
+  margin: 0 auto clamp(24px, 4vh, 40px);
+  background: color-mix(in srgb, var(--bg-card) 90%, transparent);
+}
+
+#test-area .live-stats {
+  max-width: 700px;
+  margin: 0 auto 12px;
+}
+
+#test-area .typing-area {
+  max-width: 700px;
+  min-height: 166px;
+  height: auto;
+  margin: 0 auto;
+  padding: 17px 20px;
+  background: color-mix(in srgb, var(--bg-input) 86%, transparent);
+  border-radius: 16px;
+}
+
+#test-area .typing-hint,
+#test-area .typing-message { max-width: 700px; margin-left: auto; margin-right: auto; }
 
 .streak-badge {
   display: flex;
@@ -1331,18 +1372,28 @@ input:focus {
    ═══════════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
-  .header-inner { height: 56px; }
+  .header-inner { height: 60px; gap: 10px; }
+  nav { gap: 2px; padding: 3px; }
   nav a { padding: 6px 10px; font-size: 13px; }
   .results-hero .stat-main b { font-size: 54px; }
   .key { width: 32px; height: 36px; font-size: 12px; }
   .live-stats { font-size: 22px; gap: 18px; }
   .layout { padding: 0 var(--gap-md); }
   .auth-card { padding: var(--gap-lg); }
+  #test-area { margin-top: 16px; padding: 16px 12px; border-radius: 18px; }
+  #test-area .typing-area { min-height: 145px; padding: 12px; }
 }
 
 @media (max-width: 480px) {
-  nav { gap: 0; }
-  nav a { padding: 6px 8px; font-size: 12px; }
+  .header-inner { gap: 6px; }
+  nav { gap: 0; padding: 2px; }
+  nav a { padding: 6px 6px; font-size: 11px; }
+  .logo { font-size: 19px; }
+  .logo-icon { width: 22px; height: 22px; margin-right: 2px; }
+  .header { padding: 0 10px; }
+  .header-right { gap: 8px; }
+  .streak-badge { font-size: 0; gap: 0; padding: 5px 7px; }
+  .streak-badge::before { font-size: 13px; }
   .toolbar { padding: 6px 8px; }
   .toolbar button { padding: 4px 10px; font-size: 12px; }
   .profile-header { flex-direction: column; text-align: center; }
