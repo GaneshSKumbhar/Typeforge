@@ -1,6 +1,6 @@
 // ── Typing engine ──
 
-import { WORDS, CODE } from './data/words.js';
+import { WORDS, CODE, SENTENCES } from './data/words.js';
 import { state, saveKeys, saveHistory, savePBs, saveDays } from './store.js';
 import { afterTest as fbAfterTest, syncUser } from './firebase.js';
 
@@ -61,17 +61,33 @@ function gen() {
       if (f.length > 5) pool = f;
     }
   }
-  for (let j = 0; j < n; j++) {
-    let w = rnd(pool);
-    if (S.nums && Math.random() < 0.1) w = String(Math.floor(Math.random() * 9000) + 1);
-    if (S.punct) {
-      if (j === 0 || /[.?]$/.test(out[j - 1])) w = w[0].toUpperCase() + w.slice(1);
-      const r = Math.random();
-      if (r < 0.1) w += ",";
-      else if (r < 0.17) w += ".";
-      else if (r < 0.2) w += "?";
+  const sentenceEnds = new Set();
+  if (S.mode === "weak") {
+    for (let j = 0; j < n; j++) out.push(rnd(pool));
+  } else {
+    while (out.length < n) {
+      const source = rnd(SENTENCES).split(/\s+/);
+      const sentence = S.punct ? source : source.map(word => word.toLowerCase().replace(/[.,!?;:]/g, ""));
+      const take = Math.min(sentence.length, n - out.length);
+      out.push(...sentence.slice(0, take));
+      if (take === sentence.length) sentenceEnds.add(out.length - 1);
     }
-    out.push(w);
+  }
+
+  if (S.nums) {
+    for (let j = 3; j < out.length; j++) {
+      if (out[j].length > 3 && Math.random() < 0.025) {
+        const punctuation = S.punct ? out[j].match(/[.,!?;:]$/)?.[0] || "" : "";
+        out[j] = String(Math.floor(Math.random() * 9000) + 1) + punctuation;
+      }
+    }
+  }
+
+  if (S.punct && S.mode !== "weak") {
+    for (let j = 0; j < out.length; j++) {
+      if (j === 0 || sentenceEnds.has(j - 1)) out[j] = out[j][0].toUpperCase() + out[j].slice(1);
+      if (j === out.length - 1 && !/[.!?]$/.test(out[j])) out[j] += ".";
+    }
   }
   return out.join(" ");
 }

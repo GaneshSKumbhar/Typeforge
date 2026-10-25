@@ -8,6 +8,7 @@ Typeforge is a browser-based typing practice app built with vanilla JavaScript a
 - Code snippets with punctuation and symbols.
 - Optional punctuation and number practice.
 - Weak-key practice based on local key accuracy history.
+- Typing passages assembled from complete, natural sentences rather than shuffled unrelated words.
 - Live WPM and accuracy, a personal-best ghost caret, and a post-test pace chart.
 - Local history, personal bests, daily streaks, and per-key accuracy.
 - Dark, light, and ocean themes, plus font size, accent, caret, sound, and live-stat settings.
@@ -69,7 +70,7 @@ The web API key in Firebase's client configuration is expected to be present in 
 
 - Guests can practice. Their settings, key stats, personal bests, activity, and history remain local to that browser.
 - Signed-in users sync their profile and practice data to their own `users/{uid}` Firestore document.
-- The public leaderboard reads `boards/{board}/scores` and displays up to 25 scores, sorted by WPM.
+- The public leaderboard reads all score documents in `boards/{board}/scores`, sorted by WPM.
 - A score is submitted only for a signed-in user, for a counted test with more than 10 keystrokes, in time or word mode, with punctuation and numbers disabled, accuracy of at least 85%, and WPM no higher than 300.
 - Each user has one score document per board; a new score replaces the saved score only when its WPM is higher.
 - A newly created or unused board can be empty. Local practice scores are not retroactively uploaded just by signing in; complete a qualifying test while signed in to publish a score.

@@ -150,6 +150,6 @@ export async function afterTest(wpm, acc, raw, counted, keyFn) {
 export async function loadLeaderboard(boardKey) {
   if (!fbOK || !db) return null;
   const snap = await db.collection("boards").doc(boardKey).collection("scores")
-    .orderBy("wpm", "desc").limit(25).get();
+    .orderBy("wpm", "desc").get();
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }

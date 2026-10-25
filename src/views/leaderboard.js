@@ -11,7 +11,7 @@ export function renderLeaderboard(container) {
   container.innerHTML = `
     <div class="view-content">
       <h2 class="section-title">Leaderboard</h2>
-      <p class="text-muted mb-lg">Top scores across all players. Only standard tests without punctuation/numbers qualify.</p>
+      <p class="text-muted mb-lg">Every player’s best qualifying score, ranked by speed. Choose a test to compare results.</p>
 
       <div class="lb-tabs" id="lb-tabs">
         ${BOARDS.map(k =>
@@ -40,19 +40,17 @@ async function loadBoard() {
   if (!fbOK) {
     box.innerHTML = `
       <div class="card">
-        <p>The leaderboard requires Firebase. Add your config in <code>firebase-config.js</code> (see README).</p>
+        <p>The leaderboard requires Firebase. Add your web app configuration to <code>index.html</code> as described in the README.</p>
       </div>`;
     return;
   }
 
-  box.innerHTML = `
-    <div style="text-align:center;padding:40px;color:var(--fg-dim);">
-      <div style="font-size:24px;margin-bottom:8px;animation:pulse 1.2s infinite;">⚡</div>
-      Loading scores...
-    </div>`;
+  const selectedBoard = lbKey;
+  box.innerHTML = `<div class="card lb-empty"><div class="lb-empty-icon" aria-hidden="true">✦</div><p>Loading ${esc(selectedBoard.replace(/(\D+)(\d+)/, "$1 $2"))} scores…</p></div>`;
 
   try {
-    const scores = await loadLeaderboard(lbKey);
+    const scores = await loadLeaderboard(selectedBoard);
+    if (selectedBoard !== lbKey || box !== document.getElementById("lb-content")) return;
 
     if (!scores || scores.length === 0) {
       box.innerHTML = `
@@ -68,33 +66,32 @@ async function loadBoard() {
       return;
     }
 
-    let rank = 0;
     box.innerHTML = `
-      <div class="history-wrap">
-        <table class="history-table">
-          <tr>
-            <th>#</th>
-            <th>player</th>
-            <th>wpm</th>
-            <th>acc</th>
-            <th>date</th>
-          </tr>
-          ${scores.map(v => {
-            rank++;
+      <section class="leaderboard-panel" aria-label="${esc(selectedBoard.replace(/(\D+)(\d+)/, "$1 $2"))} rankings">
+        <div class="leaderboard-head">
+          <div><span class="leaderboard-kicker">Community rankings</span><h3>${esc(selectedBoard.replace(/(\D+)(\d+)/, "$1 $2"))}</h3></div>
+          <span class="leaderboard-count">${scores.length} ${scores.length === 1 ? "player" : "players"}</span>
+        </div>
+        <div class="lb-table-wrap">
+        <table class="lb-table">
+          <thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">WPM</th><th scope="col">Accuracy</th><th scope="col">Updated</th></tr></thead>
+          <tbody>${scores.map((v, index) => {
+            const rank = index + 1;
             const isMe = user && v.id === user.uid;
-            const medal = rank === 1 ? "🥇 " : rank === 2 ? "🥈 " : rank === 3 ? "🥉 " : "";
             return `
               <tr class="${isMe ? "me" : ""}">
-                <td>${medal}${rank}</td>
-                <td>${esc(v.name)}</td>
-                <td>${v.wpm}</td>
-                <td>${v.acc}%</td>
-                <td>${new Date(v.t).toLocaleDateString()}</td>
+                <td>${rank === 1 ? "♛ 01" : String(rank).padStart(2, "0")}</td>
+                <td class="player">${esc(v.name || "Player")}${isMe ? " <small>(you)</small>" : ""}</td>
+                <td class="score">${Number(v.wpm).toFixed(1)}</td>
+                <td>${Number(v.acc)}%</td>
+                <td>${Number.isFinite(Number(v.t)) ? new Date(Number(v.t)).toLocaleDateString() : "—"}</td>
               </tr>`;
-          }).join("")}
+          }).join("")}</tbody>
         </table>
-      </div>`;
+        </div>
+      </section>`;
   } catch (e) {
+    if (selectedBoard !== lbKey || box !== document.getElementById("lb-content")) return;
     box.innerHTML = `
       <div class="card">
         <p>Could not load scores. Check your Firestore rules and connection.</p>

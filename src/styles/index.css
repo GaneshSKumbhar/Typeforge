@@ -57,8 +57,8 @@
   --gap-2xl: 48px;
 
   /* Typography */
-  --font-display: 'Outfit', sans-serif;
-  --font-body:    'Inter', sans-serif;
+  --font-display: Georgia, 'Times New Roman', serif;
+  --font-body:    'JetBrains Mono', 'Fira Code', monospace;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
   /* Typing area */
@@ -1119,6 +1119,42 @@ input:focus {
   font-weight: 600;
 }
 
+/* Leaderboard presentation */
+.leaderboard-panel {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--bg-card) 94%, var(--accent) 6%), var(--bg-raised));
+  box-shadow: var(--shadow-md);
+}
+.leaderboard-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--gap-md);
+  padding: 24px 26px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.leaderboard-kicker { color: var(--accent-text); font: 500 11px var(--font-mono); letter-spacing: 1.6px; text-transform: uppercase; }
+.leaderboard-head h3 { margin: 5px 0 0; color: var(--fg); font: 600 26px var(--font-display); }
+.leaderboard-count { padding: 6px 10px; border: 1px solid var(--line); border-radius: var(--radius-full); color: var(--fg-muted); font: 12px var(--font-mono); white-space: nowrap; }
+.lb-table-wrap { overflow-x: auto; }
+.lb-table { width: 100%; border-collapse: collapse; font: 14px var(--font-mono); }
+.lb-table th, .lb-table td { padding: 15px 20px; border-bottom: 1px solid var(--line); text-align: left; white-space: nowrap; }
+.lb-table th { color: var(--fg-dim); font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+.lb-table tbody tr { transition: background .15s ease; }
+.lb-table tbody tr:hover { background: var(--accent-subtle); }
+.lb-table tbody tr:last-child td { border-bottom: 0; }
+.lb-table td:first-child { width: 72px; color: var(--fg-muted); }
+.lb-table td.player { min-width: 200px; color: var(--fg); font-weight: 600; }
+.lb-table td.score { color: var(--accent-text); font-size: 16px; font-weight: 700; }
+.lb-table tr.me { background: var(--accent-subtle); }
+.lb-empty { padding: clamp(24px, 5vw, 48px); text-align: center; }
+.lb-empty-icon { color: var(--accent-text); font-size: 30px; line-height: 1; text-shadow: 0 0 24px var(--accent-glow); }
+.lb-empty h3 { margin: 14px 0 8px; font: 600 20px var(--font-display); color: var(--fg); }
+.lb-empty p { max-width: 590px; margin: 8px auto; color: var(--fg-muted); }
+.lb-empty .btn-primary { display: inline-flex; margin-top: 16px; text-decoration: none; }
+
 /* Profile footer */
 .profile-footer {
   margin-top: var(--gap-xl);
@@ -1228,12 +1264,6 @@ input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 12px var(--accent-glow);
 }
-
-.lb-empty { padding: clamp(24px, 5vw, 48px); text-align: center; }
-.lb-empty-icon { color: var(--accent-text); font-size: 30px; line-height: 1; text-shadow: 0 0 24px var(--accent-glow); }
-.lb-empty h3 { margin: 14px 0 8px; font: 600 20px var(--font-display); color: var(--fg); }
-.lb-empty p { max-width: 590px; margin: 8px auto; color: var(--fg-muted); }
-.lb-empty .btn-primary { display: inline-flex; margin-top: 16px; text-decoration: none; }
 
 /* ═══════════════════════════════════════════════════════════════
    VIEWS / ROUTING
